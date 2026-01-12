@@ -1,64 +1,74 @@
+const main = document.querySelector(".main");
+const btn = document.querySelectorAll("#btn");
 const choices = ["Rock", "Paper", "Scissors"];
 let compChoice;
 let playerChoice;
 let playerScore = 0;
 let compScore = 0;
 
+const playerScoreDisplay = document.querySelector("#playerScoreDisplay");
+const compScoreDisplay = document.querySelector("#compScoreDisplay");
+
+// Generate computer choice
 function getCompChoice() {
-  compChoice = Math.floor(Math.random() * 3);
+  compChoice = choices[Math.floor(Math.random() * 3)];
 }
 
-function getPlayerChoice() {
-  playerChoice =
-    Number(prompt("Enter 1 for Rock, 2 for Paper, 3 for Scissors")) - 1;
+btn.forEach((b) => b.addEventListener("click", playRound));
+
+function declareWinner(winner) {
+  alert(`${winner} WON!!!`);
+  playerScore = 0;
+  compScore = 0;
+  const logs = document.querySelectorAll(".log");
+  logs.forEach((log)=>log.remove());
+  playerScoreDisplay.textContent = 0;
+  compScoreDisplay.textContent = 0;
 }
 
-for (i = 0; i < 5; i++) {
-  console.log(`Round ${1}:`);
-  getPlayerChoice();
-  console.log(`You chose ${choices[playerChoice]}`);
+function playRound(e) {
   getCompChoice();
-  console.log(`Computer chose ${choices[compChoice]}`);
+  playerChoice = e.target.textContent;
 
-  //----------------------------------------------------- Game logic-------------------------------------------------
-  if (choices[playerChoice] == "Rock" && choices[compChoice] == "Scissors") {
-    console.log("Player wins!");
-    console.log(".............................................................");
+  if (playerChoice == "Rock" && compChoice == "Scissors") {
+    let p = document.createElement("p");
+    p.textContent = `Computer chose ${compChoice}: Player wins!`;
+    p.classList.add("log")
+    main.append(p);
+
     playerScore += 1;
-  } else if (
-    choices[playerChoice] == "Paper" &&
-    choices[compChoice] == "Rock"
-  ) {
-    console.log("Player wins!");
-    console.log(".............................................................");
+    playerScoreDisplay.textContent = playerScore;
+    if (playerScore == 5) declareWinner("Player");
+  } else if (playerChoice == "Paper" && compChoice == "Rock") {
+    let p = document.createElement("p");
+    p.textContent = `Computer chose ${compChoice}: Player wins!`;
+    p.classList.add("log")
+    main.append(p);
+
     playerScore += 1;
-  } else if (
-    choices[playerChoice] == "Scissors" &&
-    choices[compChoice] == "Paper"
-  ) {
-    console.log("Player wins!");
-    console.log(".............................................................");
+    playerScoreDisplay.textContent = playerScore;
+    if (playerScore == 5) declareWinner("Player");
+  } else if (playerChoice == "Scissors" && compChoice == "Paper") {
+    let p = document.createElement("p");
+    p.textContent = `Computer chose ${compChoice}: Player wins!`;
+    p.classList.add("log")
+    main.append(p);
+
     playerScore += 1;
-  } else if (choices[playerChoice] == choices[compChoice]) {
-    console.log("Draw!");
-    console.log(".............................................................");
+    playerScoreDisplay.textContent = playerScore;
+    if (playerScore == 5) declareWinner("Player");
+  } else if (playerChoice == compChoice) {
+    let p = document.createElement("p");
+    p.textContent = "Its a tie!";
+    p.classList.add("log")
+    main.append(p);
   } else {
-    console.log("Computer wins!");
-    console.log(".............................................................");
+    let p = document.createElement("p");
+    p.textContent = `Computer chose ${compChoice}: Computer wins!`;
+    p.classList.add("log")
+    main.append(p);
     compScore += 1;
+    compScoreDisplay.textContent = compScore;
+    if (compScore == 5) declareWinner("Computer");
   }
-
-  // else if(choices[playerChoice] == "Rock" && choices[compChoice] == "Scissors"){
-
-  // }
-
-  console.log(`Scores:Player ${playerScore}  || Computer ${compScore}`);
-}
-
-if(playerScore > compScore){
-    alert("You win!!!")
-}else if(playerScore == compScore){
-    alert("Its a tie")
-}else{
-    alert("You lost!")
 }
